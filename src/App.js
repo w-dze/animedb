@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React , {useState} from "react";
+import Search from "./components/Search";
+import axios from 'axios';
 
 function App() {
+  const [state, setState] = useState({
+    s: "",
+    result: [],
+    selected:{}
+  });
+
+  const apiURL = process.env.REACT_APP_API_URL
+
+  const search = (e) =>{
+    if (e.key === "Enter"){
+      const url = `${apiURL}&s=${state.s}`;
+      console.log("URL:", url);
+
+      axios.get(url).then((response)=>{
+        console.log(response.data);
+      });
+    }
+  }
+  
+  const handleInput = (e) => {
+    let s = e.target.value;
+
+    setState(prevState =>{
+      return {...prevState, s:s}
+    });
+
+    console.log(state.s)
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h1>Anime Database</h1>
       </header>
+      <main>
+        <Search handleInput={handleInput} search = {search}/>
+      </main>
     </div>
   );
 }
