@@ -1,5 +1,7 @@
 import React from "react";
 
+import Results from "./Results";
+
 function Search({ handleInput, search }) {
   return (
     <section className="searchbox-wrap">
